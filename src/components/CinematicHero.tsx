@@ -52,7 +52,7 @@ const CinematicHero = () => {
       transition: {
         duration: 1.2,
         delay: 0.8 + i * 0.1,
-        ease: [0.215, 0.61, 0.355, 1],
+        ease: [0.215, 0.61, 0.355, 1] as const,
       },
     }),
   };
