@@ -114,8 +114,8 @@ const CinematicHero = () => {
         </motion.span>
 
         {/* Letter-by-letter title */}
-        <div className="overflow-hidden mb-2 md:mb-4 font-brand">
-          <h1 className="heading-xl text-foreground flex justify-center perspective-1000">
+        <div className="overflow-hidden mb-2 md:mb-4">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-medium tracking-tight leading-none text-foreground flex justify-center perspective-1000 font-brand">
             {titleLetters.map((letter, i) => (
               <motion.span
                 key={i}

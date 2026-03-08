@@ -58,7 +58,7 @@ const Navbar = () => {
           <motion.a
             href="#"
             whileHover={{ scale: 1.02 }}
-            className="font-brand text-xl sm:text-2xl md:text-3xl tracking-wider text-foreground"
+            className="text-xl sm:text-2xl md:text-3xl tracking-wider text-foreground font-brand"
           >
             TANDAV <span className="text-gradient-copper">CAFÉ</span>
           </motion.a>
