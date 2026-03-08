@@ -115,24 +115,26 @@ const CinematicHero = () => {
 
         {/* Title on single line */}
         <div className="overflow-hidden mb-6 md:mb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-medium tracking-tight leading-none text-foreground flex justify-center items-baseline gap-3 sm:gap-4 md:gap-6 perspective-1000 font-brand">
-            {titleLetters.map((letter, i) => (
-              <motion.span
-                key={i}
-                custom={i}
-                initial="hidden"
-                animate="visible"
-                variants={letterVariants}
-                className="inline-block"
-              >
-                {letter}
-              </motion.span>
-            ))}
+          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-medium tracking-tight leading-none text-foreground flex justify-center items-baseline perspective-1000 font-brand">
+            <span className="flex">
+              {titleLetters.map((letter, i) => (
+                <motion.span
+                  key={i}
+                  custom={i}
+                  initial="hidden"
+                  animate="visible"
+                  variants={letterVariants}
+                  className="inline-block"
+                >
+                  {letter}
+                </motion.span>
+              ))}
+            </span>
             <motion.span
               initial={{ opacity: 0, scale: 0.8, filter: "blur(20px)" }}
               animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
               transition={{ duration: 1.5, delay: 1.6 }}
-              className="text-gradient-copper italic font-normal"
+              className="text-gradient-copper italic font-normal ml-3 sm:ml-4 md:ml-6"
             >
               Café
             </motion.span>
