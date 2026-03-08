@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
-import heroBg from "@/assets/hero-coffee.jpg";
+import { useRef, useState } from "react";
+import heroBg from "@/assets/cafe-hero.webp";
 
 const SteamParticle = ({ delay, x }: { delay: number; x: number }) => (
   <motion.div
@@ -33,7 +33,7 @@ const CinematicHero = () => {
   const bgScale = useTransform(smoothProgress, [0, 1], [1, 1.3]);
   const textY = useTransform(smoothProgress, [0, 1], [0, -200]);
   const textOpacity = useTransform(smoothProgress, [0, 0.5], [1, 0]);
-  const overlayOpacity = useTransform(smoothProgress, [0, 0.5], [0.65, 0.9]);
+  const overlayOpacity = useTransform(smoothProgress, [0, 0.5], [0.55, 0.9]);
 
   const [particles] = useState(() =>
     Array.from({ length: 15 }, (_, i) => ({
@@ -42,30 +42,13 @@ const CinematicHero = () => {
     }))
   );
 
-  const letterVariants = {
-    hidden: { opacity: 0, y: 120, rotateX: -90, filter: "blur(10px)" },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      rotateX: 0,
-      filter: "blur(0px)",
-      transition: {
-        duration: 1.2,
-        delay: 0.8 + i * 0.1,
-        ease: [0.215, 0.61, 0.355, 1] as const,
-      },
-    }),
-  };
-
-  const titleLetters = "TANDAV".split("");
-
   return (
     <section ref={ref} className="relative h-[120vh] overflow-hidden vignette">
       {/* Parallax background */}
       <motion.div style={{ scale: bgScale }} className="absolute inset-0">
         <img
           src={heroBg}
-          alt="Tandav Café cinematic interior"
+          alt="Tandav Café exterior"
           className="w-full h-full object-cover"
           loading="eager"
         />
@@ -74,7 +57,6 @@ const CinematicHero = () => {
           className="absolute inset-0 bg-background"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50" />
-        {/* Extra cinematic gradient overlays */}
         <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-background/40" />
       </motion.div>
 
@@ -115,27 +97,20 @@ const CinematicHero = () => {
           <span className="w-12 h-px bg-primary/30" />
         </motion.span>
 
-        {/* Title on single line - centered */}
+        {/* Title with blur animation - no staggered letters */}
         <div className="overflow-hidden">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-medium tracking-tight leading-none text-foreground flex justify-center items-baseline perspective-1000 font-brand">
-            <span className="flex">
-              {titleLetters.map((letter, i) => (
-                <motion.span
-                  key={i}
-                  custom={i}
-                  initial="hidden"
-                  animate="visible"
-                  variants={letterVariants}
-                  className="inline-block"
-                >
-                  {letter}
-                </motion.span>
-              ))}
-            </span>
+          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-medium tracking-tight leading-none text-foreground flex justify-center items-baseline font-brand">
             <motion.span
               initial={{ opacity: 0, scale: 0.8, filter: "blur(20px)" }}
               animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-              transition={{ duration: 1.5, delay: 1.6 }}
+              transition={{ duration: 1.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            >
+              TANDAV
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8, filter: "blur(20px)" }}
+              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              transition={{ duration: 1.5, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className="text-gradient-copper ml-3 sm:ml-4 md:ml-6"
             >
               Café
@@ -146,14 +121,14 @@ const CinematicHero = () => {
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
-          transition={{ duration: 1.5, delay: 2 }}
+          transition={{ duration: 1.5, delay: 1.5 }}
           className="w-24 md:w-40 h-px bg-gradient-to-r from-transparent via-primary to-transparent my-10 md:my-14"
         />
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 2.6 }}
+          transition={{ duration: 0.8, delay: 2 }}
           className="flex flex-col sm:flex-row gap-4"
         >
           <motion.a
@@ -182,7 +157,7 @@ const CinematicHero = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 3.2 }}
+        transition={{ delay: 2.5 }}
         className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3"
       >
         <motion.span
