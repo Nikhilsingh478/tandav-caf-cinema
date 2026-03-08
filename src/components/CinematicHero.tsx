@@ -60,7 +60,7 @@ const CinematicHero = () => {
   const titleLetters = "TANDAV".split("");
 
   return (
-    <section ref={ref} className="relative h-[120vh] overflow-hidden">
+    <section ref={ref} className="relative h-[120vh] overflow-hidden vignette">
       {/* Parallax background */}
       <motion.div style={{ scale: bgScale }} className="absolute inset-0">
         <img
@@ -74,6 +74,8 @@ const CinematicHero = () => {
           className="absolute inset-0 bg-background"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50" />
+        {/* Extra cinematic gradient overlays */}
+        <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-background/40" />
       </motion.div>
 
       {/* Steam particles */}
