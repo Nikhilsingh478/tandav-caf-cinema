@@ -113,8 +113,8 @@ const CinematicHero = () => {
           <span className="w-12 h-px bg-primary/30" />
         </motion.span>
 
-        {/* Title on single line */}
-        <div className="overflow-hidden mb-6 md:mb-8">
+        {/* Title on single line - centered */}
+        <div className="overflow-hidden">
           <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-medium tracking-tight leading-none text-foreground flex justify-center items-baseline perspective-1000 font-brand">
             <span className="flex">
               {titleLetters.map((letter, i) => (
@@ -134,7 +134,7 @@ const CinematicHero = () => {
               initial={{ opacity: 0, scale: 0.8, filter: "blur(20px)" }}
               animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
               transition={{ duration: 1.5, delay: 1.6 }}
-              className="text-gradient-copper italic font-normal ml-3 sm:ml-4 md:ml-6"
+              className="text-gradient-copper ml-3 sm:ml-4 md:ml-6"
             >
               Café
             </motion.span>
@@ -145,17 +145,8 @@ const CinematicHero = () => {
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 1.5, delay: 2 }}
-          className="w-24 md:w-40 h-px bg-gradient-to-r from-transparent via-primary to-transparent my-8 md:my-12"
+          className="w-24 md:w-40 h-px bg-gradient-to-r from-transparent via-primary to-transparent my-10 md:my-14"
         />
-
-        <motion.p
-          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 1, delay: 2.3 }}
-          className="body-lg max-w-lg mb-12 md:mb-16 text-center italic"
-        >
-          "Coffee is not made. It is performed."
-        </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}
