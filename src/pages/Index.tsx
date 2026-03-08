@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import CinematicHero from "@/components/CinematicHero";
@@ -15,6 +15,10 @@ import FooterSection from "@/components/FooterSection";
 import LoadingScreen from "@/components/LoadingScreen";
 import CustomCursor from "@/components/CustomCursor";
 import NoiseOverlay from "@/components/NoiseOverlay";
+
+const SectionDivider = () => (
+  <div className="section-divider mx-4 sm:mx-6 md:mx-12 lg:mx-24" />
+);
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,13 +37,21 @@ const Index = () => {
             <Navbar />
             <CinematicHero />
             <BeanSection />
+            <SectionDivider />
             <GrindSection />
+            <SectionDivider />
             <BrewSection />
+            <SectionDivider />
             <LatteArtSection />
+            <SectionDivider />
             <FloatingMenuSection />
+            <SectionDivider />
             <HorizontalOrigins />
+            <SectionDivider />
             <CafeExperience />
+            <SectionDivider />
             <LocationSection />
+            <SectionDivider />
             <ReservationSection />
             <FooterSection />
           </main>
