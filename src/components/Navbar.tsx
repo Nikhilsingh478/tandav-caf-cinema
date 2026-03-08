@@ -58,7 +58,7 @@ const Navbar = () => {
           <motion.a
             href="#"
             whileHover={{ scale: 1.02 }}
-            className="font-display text-lg sm:text-xl md:text-2xl tracking-wider text-foreground"
+            className="font-brand text-xl sm:text-2xl md:text-3xl tracking-wider text-foreground"
           >
             TANDAV <span className="text-gradient-copper">CAFÉ</span>
           </motion.a>
@@ -124,7 +124,7 @@ const Navbar = () => {
               className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-background/98 backdrop-blur-2xl border-l border-border flex flex-col"
             >
               <div className="flex items-center justify-between px-6 py-5 border-b border-border">
-                <span className="font-display text-lg tracking-wider text-foreground">
+                <span className="font-brand text-xl tracking-wider text-foreground">
                   TANDAV <span className="text-gradient-copper">CAFÉ</span>
                 </span>
                 <motion.button

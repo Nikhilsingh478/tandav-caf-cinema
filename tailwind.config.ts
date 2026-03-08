@@ -65,6 +65,7 @@ export default {
       fontFamily: {
         display: ['Playfair Display', 'serif'],
         body: ['Inter', 'sans-serif'],
+        brand: ['Saman', 'serif'],
       },
       borderRadius: {
         lg: "var(--radius)",
