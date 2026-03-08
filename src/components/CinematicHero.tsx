@@ -136,7 +136,7 @@ const CinematicHero = () => {
           animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
           transition={{ duration: 1.5, delay: 1.6 }}
         >
-          <h1 className="heading-xl text-gradient-copper italic font-normal">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl tracking-tight leading-none text-gradient-copper italic font-normal font-brand">
             Café
           </h1>
         </motion.div>
