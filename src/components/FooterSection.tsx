@@ -28,7 +28,7 @@ const FooterSection = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-12 md:mb-16"
           >
-            <span className="font-display text-2xl md:text-3xl tracking-wider text-foreground">
+            <span className="font-brand text-3xl md:text-4xl tracking-wider text-foreground">
               TANDAV <span className="text-gradient-copper">CAFÉ</span>
             </span>
             <motion.div
