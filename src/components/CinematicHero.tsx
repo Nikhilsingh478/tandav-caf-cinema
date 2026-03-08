@@ -113,9 +113,9 @@ const CinematicHero = () => {
           <span className="w-12 h-px bg-primary/30" />
         </motion.span>
 
-        {/* Letter-by-letter title */}
-        <div className="overflow-hidden mb-2 md:mb-4">
-          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-medium tracking-tight leading-none text-foreground flex justify-center perspective-1000 font-brand">
+        {/* Title on single line */}
+        <div className="overflow-hidden mb-6 md:mb-8">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-medium tracking-tight leading-none text-foreground flex justify-center items-baseline gap-3 sm:gap-4 md:gap-6 perspective-1000 font-brand">
             {titleLetters.map((letter, i) => (
               <motion.span
                 key={i}
@@ -128,18 +128,16 @@ const CinematicHero = () => {
                 {letter}
               </motion.span>
             ))}
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8, filter: "blur(20px)" }}
+              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              transition={{ duration: 1.5, delay: 1.6 }}
+              className="text-gradient-copper italic font-normal"
+            >
+              Café
+            </motion.span>
           </h1>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8, filter: "blur(20px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          transition={{ duration: 1.5, delay: 1.6 }}
-        >
-          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl tracking-tight leading-none text-gradient-copper italic font-normal font-brand">
-            Café
-          </h1>
-        </motion.div>
 
         <motion.div
           initial={{ scaleX: 0 }}
