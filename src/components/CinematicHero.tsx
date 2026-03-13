@@ -4,24 +4,22 @@ import heroBg from "@/assets/cafe-hero.webp";
 
 const SteamParticle = ({ delay, x }: { delay: number; x: number }) => (
   <motion.div
-    initial={{ y: 0, opacity: 0, scale: 0.5 }}
+    initial={{ y: 0, opacity: 0 }}
     animate={{
       y: [-20, -200, -400],
-      opacity: [0, 0.4, 0],
-      scale: [0.5, 1, 0.3],
+      opacity: [0, 0.3, 0],
       x: [0, Math.sin(x) * 30, Math.sin(x) * 60],
     }}
     transition={{
-      duration: 6 + Math.random() * 4,
+      duration: 8 + Math.random() * 4,
       delay,
       repeat: Infinity,
-      ease: "easeOut",
+      ease: "linear",
     }}
-    className="absolute w-1 h-1 rounded-full bg-foreground/20"
+    className="absolute w-1 h-1 rounded-full bg-foreground/15 will-change-transform"
     style={{ left: `${45 + x * 3}%`, bottom: "30%" }}
   />
 );
-
 const CinematicHero = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
