@@ -43,7 +43,7 @@ const CinematicHero = () => {
   return (
     <section ref={ref} className="relative h-[120vh] overflow-hidden vignette">
       {/* Parallax background */}
-      <motion.div style={{ scale: bgScale }} className="absolute inset-0">
+      <motion.div style={{ scale: bgScale }} className="absolute inset-0 will-change-transform">
         <img
           src={heroBg}
           alt="Tandav Café exterior"
