@@ -6,6 +6,12 @@
     <!-- TODO: Set the document title to the name of your application -->
     <title>Tandav Café — Premium Coffee Experience</title>
     <meta name="description" content="Where every sip tells a story. Experience premium single-origin coffee in a luxury café atmosphere." />
+    <link rel="preload" href="/fonts/SAMAN.TTF" as="font" type="font/ttf" crossorigin />
+    <style>html { visibility: hidden; } html.fonts-ready { visibility: visible; }</style>
+    <script>
+      document.fonts.ready.then(function() { document.documentElement.classList.add('fonts-ready'); });
+      setTimeout(function() { document.documentElement.classList.add('fonts-ready'); }, 1500);
+    </script>
     <meta name="author" content="Tandav Café" />
 
     <meta property="og:title" content="Tandav Café — Premium Coffee Experience" />
