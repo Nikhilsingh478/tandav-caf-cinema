@@ -34,9 +34,9 @@ const CinematicHero = () => {
   const overlayOpacity = useTransform(smoothProgress, [0, 0.5], [0.55, 0.9]);
 
   const [particles] = useState(() =>
-    Array.from({ length: 15 }, (_, i) => ({
-      delay: i * 0.8,
-      x: (i % 5) - 2,
+    Array.from({ length: 6 }, (_, i) => ({
+      delay: i * 1.5,
+      x: (i % 3) - 1,
     }))
   );
 
