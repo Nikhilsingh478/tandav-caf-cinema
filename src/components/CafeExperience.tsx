@@ -9,77 +9,34 @@ const CafeExperience = () => {
     offset: ["start end", "end start"],
   });
 
-  const bgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.15, 1, 0.95]);
-  const bgY = useTransform(scrollYProgress, [0, 1], [60, -60]);
-  const textOpacity = useTransform(scrollYProgress, [0.15, 0.35, 0.7, 0.9], [0, 1, 1, 0]);
-  const textY = useTransform(scrollYProgress, [0.15, 0.35], [80, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1, 0.98]);
+  const y = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
+  const textOpacity = useTransform(scrollYProgress, [0.2, 0.4, 0.7, 0.9], [0, 1, 1, 0]);
 
   return (
-    <section id="about" ref={ref} className="relative min-h-[120vh] flex items-center justify-center overflow-hidden">
-      {/* Full-bleed background */}
-      <motion.div style={{ scale: bgScale, y: bgY }} className="absolute inset-0">
+    <section ref={ref} className="relative h-[90vh] min-h-[500px] w-full overflow-hidden grain">
+      <motion.div style={{ scale, y }} className="absolute inset-0 will-change-transform">
         <img
           src={cafeInterior}
-          alt="Tandav Café interior"
-          className="w-full h-full object-cover"
+          alt="Inside Tandav Café"
+          className="h-full w-full object-cover"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-background/75" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-background/50" />
+        <div className="absolute inset-0 bg-background/55" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
       </motion.div>
 
-      {/* Content */}
       <motion.div
-        style={{ opacity: textOpacity, y: textY }}
-        className="relative z-10 text-center px-4 sm:px-6 max-w-3xl mx-auto"
+        style={{ opacity: textOpacity }}
+        className="relative z-10 flex h-full items-center justify-center px-6"
       >
-        <motion.div
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="w-16 h-px bg-primary mx-auto mb-8"
-        />
-
-        <span className="label-sm text-primary mb-6 block">The Experience</span>
-
-        <h2 className="heading-lg text-foreground mb-8">
-          A Dance of{" "}
-          <span className="text-gradient-copper italic">Craft</span>
-        </h2>
-
-        <p className="body-lg max-w-2xl mx-auto mb-8 text-lg md:text-xl leading-relaxed">
-          Tandav Café is inspired by the ancient concept of Tandava — the cosmic dance 
-          of creation and destruction. Here, coffee is not simply prepared. It is choreographed. 
-          Every step, from bean selection to the final pour, is a deliberate act of artistry.
-        </p>
-
-        <p className="body-lg max-w-xl mx-auto">
-          We believe that the ritual of coffee-making deserves the same reverence 
-          as any great performance. Welcome to the stage.
-        </p>
-
-        {/* Stats */}
-        <div className="flex items-center justify-center gap-8 md:gap-16 mt-12 md:mt-16">
-          {[
-            { value: "12+", label: "Origins" },
-            { value: "2024", label: "Est." },
-            { value: "∞", label: "Passion" },
-          ].map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }}
-              className="text-center"
-            >
-              <span className="block text-3xl md:text-4xl font-display text-primary">
-                {stat.value}
-              </span>
-              <span className="label-sm mt-2 block">{stat.label}</span>
-            </motion.div>
-          ))}
+        <div className="max-w-2xl text-center">
+          <p className="eyebrow mb-6">04 — The Room</p>
+          <p className="display-md text-cream text-balance">
+            Come for the coffee.
+            <br />
+            Stay because <span className="italic text-copper">it feels right</span>.
+          </p>
         </div>
       </motion.div>
     </section>

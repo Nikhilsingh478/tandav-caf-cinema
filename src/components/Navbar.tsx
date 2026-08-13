@@ -5,39 +5,27 @@ import { Menu, X } from "lucide-react";
 const navLinks = [
   { label: "Story", href: "#story" },
   { label: "Menu", href: "#menu" },
-  { label: "Origins", href: "#origins" },
-  { label: "About", href: "#about" },
-  { label: "Reserve", href: "#reserve" },
+  { label: "Visit", href: "#visit" },
 ];
 
 const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const { scrollY } = useScroll();
   const navBackground = useTransform(
     scrollY,
-    [0, 100],
-    ["hsla(0, 0%, 4%, 0)", "hsla(0, 0%, 4%, 0.8)"]
+    [0, 80],
+    ["hsla(25, 16%, 7%, 0)", "hsla(25, 16%, 7%, 0.85)"]
   );
-  const navBlur = useTransform(scrollY, [0, 100], ["blur(0px)", "blur(20px)"]);
+  const navBorder = useTransform(
+    scrollY,
+    [0, 80],
+    ["hsla(25, 12%, 18%, 0)", "hsla(25, 12%, 18%, 0.6)"]
+  );
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Prevent body scroll when mobile menu is open
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
   return (
@@ -48,52 +36,44 @@ const Navbar = () => {
         transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         style={{
           backgroundColor: navBackground,
-          backdropFilter: navBlur,
+          borderBottomColor: navBorder,
+          backdropFilter: useTransform(scrollY, [0, 80], ["blur(0px)", "blur(16px)"]),
         }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? "py-3 md:py-4 border-b border-border/50" : "py-4 md:py-6"
-        }`}
+        className="fixed top-0 left-0 right-0 z-50 border-b transition-all duration-500"
       >
-        <div className="flex items-center justify-between px-4 sm:px-6 md:px-12 lg:px-24">
-          <motion.a
-            href="#"
-            whileHover={{ scale: 1.02 }}
-            className="text-xl sm:text-2xl md:text-3xl tracking-wider text-foreground font-brand"
-          >
-            TANDAV <span className="text-gradient-copper">CAFÉ</span>
-          </motion.a>
+        <div className="flex items-center justify-between px-6 sm:px-10 md:px-16 lg:px-24 py-4 md:py-5">
+          <a href="#" className="group flex items-baseline gap-2">
+            <span className="font-brand text-xl sm:text-2xl tracking-wider text-cream">
+              Tandav
+            </span>
+            <span className="font-mono text-[0.6rem] tracking-[0.2em] text-copper uppercase opacity-0 -translate-x-2 transition-all duration-400 group-hover:opacity-100 group-hover:translate-x-0">
+              Café
+            </span>
+          </a>
 
-          <div className="hidden md:flex items-center gap-6 lg:gap-10">
+          <div className="hidden md:flex items-center gap-10">
             {navLinks.map((link, i) => (
               <motion.a
                 key={link.label}
                 href={link.href}
-                initial={{ opacity: 0, y: -20 }}
+                initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 * i }}
-                whileHover={{ y: -2 }}
-                className="label-sm hover:text-primary transition-all duration-300 relative group"
+                transition={{ duration: 0.5, delay: 0.15 + i * 0.08 }}
+                className="group relative font-mono text-xs tracking-[0.12em] uppercase text-muted-foreground hover:text-cream transition-colors duration-300"
               >
+                <span className="mr-1.5 text-copper/40">0{i + 1}</span>
                 {link.label}
-                <motion.span
-                  className="absolute -bottom-1 left-0 h-px bg-primary"
-                  initial={{ width: 0 }}
-                  whileHover={{ width: "100%" }}
-                  transition={{ duration: 0.3 }}
-                />
               </motion.a>
             ))}
           </div>
 
-          <motion.button
+          <button
             onClick={() => setMobileOpen(true)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="md:hidden text-foreground p-2"
+            className="md:hidden p-2 -mr-2 text-cream"
             aria-label="Open menu"
           >
-            <Menu size={22} />
-          </motion.button>
+            <Menu size={20} strokeWidth={1.5} />
+          </button>
         </div>
       </motion.nav>
 
@@ -104,74 +84,45 @@ const Navbar = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[60] md:hidden"
+            className="fixed inset-0 z-[60] md:hidden bg-background"
           >
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-background/95 backdrop-blur-xl"
-              onClick={() => setMobileOpen(false)}
-            />
-
-            {/* Content */}
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-background/98 backdrop-blur-2xl border-l border-border flex flex-col"
-            >
-              <div className="flex items-center justify-between px-6 py-5 border-b border-border">
-                <span className="font-brand text-xl tracking-wider text-foreground">
-                  TANDAV <span className="text-gradient-copper">CAFÉ</span>
-                </span>
-                <motion.button
-                  onClick={() => setMobileOpen(false)}
-                  whileHover={{ rotate: 90 }}
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
-                  aria-label="Close menu"
-                  className="p-2"
-                >
-                  <X size={22} className="text-foreground" />
-                </motion.button>
-              </div>
-
-              <div className="flex flex-col items-start justify-center flex-1 gap-1 px-6 py-8">
-                {navLinks.map((link, i) => (
-                  <motion.a
-                    key={link.label}
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    initial={{ opacity: 0, x: 40 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1 + 0.1, duration: 0.5 }}
-                    whileHover={{ x: 10 }}
-                    className="w-full py-4 text-2xl font-display text-foreground hover:text-primary transition-colors border-b border-border/50"
-                  >
-                    {link.label}
-                  </motion.a>
-                ))}
-              </div>
-
-              {/* Bottom section */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="px-6 py-6 border-t border-border"
+            <div className="flex items-center justify-between px-6 py-5 border-b border-border">
+              <span className="font-brand text-xl tracking-wider text-cream">Tandav</span>
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="p-2 -mr-2 text-cream"
+                aria-label="Close menu"
               >
-                <a
-                  href="#reserve"
+                <X size={20} strokeWidth={1.5} />
+              </button>
+            </div>
+
+            <div className="flex flex-col px-6 py-10">
+              {navLinks.map((link, i) => (
+                <motion.a
+                  key={link.label}
+                  href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="btn-primary-luxury w-full justify-center"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1, duration: 0.5 }}
+                  className="group flex items-baseline gap-4 py-5 border-b border-border"
                 >
-                  <span className="relative z-10">Reserve Table</span>
-                </a>
-              </motion.div>
-            </motion.div>
+                  <span className="font-mono text-xs text-copper/50">0{i + 1}</span>
+                  <span className="display-md text-cream group-hover:text-copper transition-colors">
+                    {link.label}
+                  </span>
+                </motion.a>
+              ))}
+            </div>
+
+            <div className="absolute bottom-8 left-6 right-6">
+              <p className="label mb-2">Visit</p>
+              <p className="font-mono text-xs text-cream/60 leading-relaxed">
+                42 Artisan Lane, Connaught Place<br />
+                New Delhi · 7am — 11pm
+              </p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
