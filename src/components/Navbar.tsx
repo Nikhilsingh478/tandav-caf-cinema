@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -13,20 +13,13 @@ const navLinks = [
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const ctaRef = useRef<HTMLAnchorElement>(null);
 
   const { scrollY } = useScroll();
-  const navBackground = useTransform(
-    scrollY,
-    [0, 100],
-    ["hsla(0, 0%, 4%, 0)", "hsla(0, 0%, 4%, 0.8)"]
-  );
-  const navBlur = useTransform(scrollY, [0, 100], ["blur(0px)", "blur(20px)"]);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setScrolled(latest > 40);
+  });
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -40,70 +33,107 @@ const Navbar = () => {
     };
   }, [mobileOpen]);
 
+  // Magnetic CTA effect
+  const handleCtaMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const el = ctaRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) / 2.5;
+    const y = (e.clientY - rect.top - rect.height / 2) / 2.5;
+    el.style.transform = `translate(${x}px, ${y}px)`;
+  };
+  const handleCtaLeave = () => {
+    const el = ctaRef.current;
+    if (!el) return;
+    el.style.transform = "translate(0px, 0px)";
+  };
+
   return (
     <>
       <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          backgroundColor: navBackground,
-          backdropFilter: navBlur,
-        }}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? "py-3 md:py-4 border-b border-border/50" : "py-4 md:py-6"
+          scrolled
+            ? "py-3 bg-background/70 backdrop-blur-2xl border-b border-border/40"
+            : "py-5 bg-transparent"
         }`}
       >
         <div className="flex items-center justify-between px-4 sm:px-6 md:px-12 lg:px-24">
+          {/* Logo */}
           <motion.a
             href="#"
             whileHover={{ scale: 1.02 }}
-            className="text-xl sm:text-2xl md:text-3xl tracking-wider text-foreground font-brand"
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            className="text-xl sm:text-2xl md:text-3xl tracking-wider text-foreground font-brand relative z-10"
           >
             TANDAV <span className="text-gradient-copper">CAFÉ</span>
           </motion.a>
 
-          <div className="hidden md:flex items-center gap-6 lg:gap-10">
+          {/* Desktop links with sliding indicator */}
+          <div
+            className="hidden md:flex items-center gap-1 relative"
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
             {navLinks.map((link, i) => (
-              <motion.a
+              <a
                 key={link.label}
                 href={link.href}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 * i }}
-                whileHover={{ y: -2 }}
-                className="label-sm hover:text-primary transition-all duration-300 relative group"
+                onMouseEnter={() => setHoveredIndex(i)}
+                className="relative px-5 py-2 text-[11px] tracking-[0.22em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300 font-body"
               >
-                {link.label}
-                <motion.span
-                  className="absolute -bottom-1 left-0 h-px bg-primary"
-                  initial={{ width: 0 }}
-                  whileHover={{ width: "100%" }}
-                  transition={{ duration: 0.3 }}
-                />
-              </motion.a>
+                <span className="relative z-10">{link.label}</span>
+              </a>
             ))}
+            {/* Sliding underline indicator */}
+            <motion.div
+              className="absolute bottom-0 h-[1.5px] bg-primary"
+              initial={false}
+              animate={{
+                left: hoveredIndex === null ? "50%" : `${hoveredIndex * 20}%`,
+                width: hoveredIndex === null ? "0px" : "20%",
+                opacity: hoveredIndex === null ? 0 : 1,
+              }}
+              transition={{ type: "spring", stiffness: 380, damping: 30 }}
+              style={{ marginLeft: 0 }}
+            />
           </div>
 
-          <motion.button
-            onClick={() => setMobileOpen(true)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="md:hidden text-foreground p-2"
-            aria-label="Open menu"
-          >
-            <Menu size={22} />
-          </motion.button>
+          {/* Desktop CTA + mobile toggle */}
+          <div className="flex items-center gap-3">
+            <a
+              ref={ctaRef}
+              href="#reserve"
+              onMouseMove={handleCtaMove}
+              onMouseLeave={handleCtaLeave}
+              className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[11px] tracking-[0.2em] uppercase font-medium border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors duration-300 will-change-transform"
+              style={{ transition: "transform 0.3s cubic-bezier(0.2,0,0.2,1), background-color 0.3s, color 0.3s" }}
+            >
+              Reserve
+            </a>
+
+            <motion.button
+              onClick={() => setMobileOpen(true)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="md:hidden text-foreground p-2 relative z-10"
+              aria-label="Open menu"
+            >
+              <Menu size={22} />
+            </motion.button>
+          </div>
         </div>
       </motion.nav>
 
+      {/* Mobile full-screen menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-[60] md:hidden"
           >
             {/* Backdrop */}
@@ -111,18 +141,19 @@ const Navbar = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-background/95 backdrop-blur-xl"
+              className="absolute inset-0 bg-background/95 backdrop-blur-2xl"
               onClick={() => setMobileOpen(false)}
             />
 
-            {/* Content */}
+            {/* Panel */}
             <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-background/98 backdrop-blur-2xl border-l border-border flex flex-col"
+              initial={{ clipPath: "circle(0% at 100% 0%)" }}
+              animate={{ clipPath: "circle(150% at 100% 0%)" }}
+              exit={{ clipPath: "circle(0% at 100% 0%)" }}
+              transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
+              className="absolute inset-0 bg-background/98 flex flex-col"
             >
+              {/* Header */}
               <div className="flex items-center justify-between px-6 py-5 border-b border-border">
                 <span className="font-brand text-xl tracking-wider text-foreground">
                   TANDAV <span className="text-gradient-copper">CAFÉ</span>
@@ -139,28 +170,33 @@ const Navbar = () => {
                 </motion.button>
               </div>
 
-              <div className="flex flex-col items-start justify-center flex-1 gap-1 px-6 py-8">
+              {/* Links with staggered reveal */}
+              <div className="flex flex-col justify-center flex-1 gap-1 px-6 py-8">
                 {navLinks.map((link, i) => (
                   <motion.a
                     key={link.label}
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    initial={{ opacity: 0, x: 40 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1 + 0.1, duration: 0.5 }}
-                    whileHover={{ x: 10 }}
-                    className="w-full py-4 text-2xl font-display text-foreground hover:text-primary transition-colors border-b border-border/50"
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15 + i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    className="group flex items-baseline gap-4 py-4 border-b border-border/40"
                   >
-                    {link.label}
+                    <span className="text-[10px] tracking-[0.2em] text-primary/60 font-body">
+                      0{i + 1}
+                    </span>
+                    <span className="font-display text-3xl text-foreground group-hover:text-primary transition-colors duration-300">
+                      {link.label}
+                    </span>
                   </motion.a>
                 ))}
               </div>
 
-              {/* Bottom section */}
+              {/* Bottom CTA */}
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
                 className="px-6 py-6 border-t border-border"
               >
                 <a
@@ -168,7 +204,7 @@ const Navbar = () => {
                   onClick={() => setMobileOpen(false)}
                   className="btn-primary-luxury w-full justify-center"
                 >
-                  <span className="relative z-10">Reserve Table</span>
+                  <span className="relative z-10">Reserve a Table</span>
                 </a>
               </motion.div>
             </motion.div>

@@ -63,8 +63,8 @@ export default {
         },
       },
       fontFamily: {
-        display: ['Playfair Display', 'serif'],
-        body: ['Inter', 'sans-serif'],
+        display: ['Fraunces', 'serif'],
+        body: ['Outfit', 'sans-serif'],
         brand: ['Saman', 'serif'],
       },
       borderRadius: {
